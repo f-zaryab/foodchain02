@@ -14,29 +14,37 @@ const LoginPage = () => {
   };
 
   return (
-    <section className={classes.layout}>
-      <Tabs variant="none" value={value} onChange={setValue}>
-        <Tabs.List ref={setRootRef} className={classes.list}>
-          <Tabs.Tab value="1" ref={setControlRef("1")} className={classes.tab}>
-            Signup
-          </Tabs.Tab>
-          <Tabs.Tab value="2" ref={setControlRef("2")} className={classes.tab}>
-            Login
-          </Tabs.Tab>
+    <section className={classes.layout} id="login-signup-section">
+      <div className={classes.formSection}>
+        <Tabs variant="none" value={value} onChange={setValue}>
+          <Tabs.List ref={setRootRef} className={classes.list}>
+            <Tabs.Tab
+              value="1"
+              ref={setControlRef("1")}
+              className={classes.tab}
+            >
+              Signup
+            </Tabs.Tab>
+            <Tabs.Tab
+              value="2"
+              ref={setControlRef("2")}
+              className={classes.tab}
+            >
+              Login
+            </Tabs.Tab>
 
-          <FloatingIndicator
-            target={value ? controlsRefs[value] : null}
-            parent={rootRef}
-            className={classes.indicator}
-          />
-        </Tabs.List>
+            <FloatingIndicator
+              target={value ? controlsRefs[value] : null}
+              parent={rootRef}
+              className={classes.indicator}
+            />
+          </Tabs.List>
 
-        <Tabs.Panel value="1">Sign up form here</Tabs.Panel>
-        <Tabs.Panel value="2">login form here</Tabs.Panel>
-      </Tabs>
-      <div id='image'>
-      dcsa
+          <Tabs.Panel value="1">Sign up form here</Tabs.Panel>
+          <Tabs.Panel value="2">login form here</Tabs.Panel>
+        </Tabs>
       </div>
+      <div id="image" className={classes.sideGradient} />
     </section>
   );
 };

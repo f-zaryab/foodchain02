@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MantineProvider, createTheme } from "@mantine/core";
 import "@mantine/core/styles.css";
-import MainLayout from "./layouts/MainLayout.tsx";
+import MainLayout from "./layouts/MainLayout/MainLayout.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
