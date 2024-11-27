@@ -1,0 +1,40 @@
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.btnOverlay {
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.exploreMenuBtn {
+  padding: 2rem 4rem;
+  font-size: 2rem;
+  height: auto;
+  margin-left: 8rem;
+  color: white;
+}
+
+.imageStyles {
+  object-fit: cover;
+}
+
+.indicator {
+  width: 12px;
+  height: 4px;
+  transition: width 250ms ease;
+
+  &[data-active] {
+    width: 60px;
+    background-color: red;
+  }
+}

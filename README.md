@@ -2,6 +2,11 @@
 
 The frontend app for RFC business model. The frontend app includes menu display and login dashboards.
 
+## Branching Rules
+
+- To add a feature to the repo, create branch name: feature/{work-done}
+- To resolve bug, add branch name: fix/{work-done}
+
 ### Libraries Installed
 
 - [Mantine](https://mantine.dev/guides/vite/): npm install @mantine/core @mantine/hooks

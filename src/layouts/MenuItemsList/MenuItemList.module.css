@@ -1,0 +1,17 @@
+.heading {
+  font-size: 3.5rem;
+  text-align: left;
+  color: red;
+}
+
+.gridSection {
+  /* background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%); */
+  background-image: linear-gradient(to right top, #d21e1e, #e9610e, #f89500, #ffc81e, #fff94c);
+}
+
+.internalContainer {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 2rem 0;
+}
