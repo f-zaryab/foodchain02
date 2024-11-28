@@ -3,13 +3,21 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { MantineProvider, createTheme } from "@mantine/core";
 import "@mantine/core/styles.css";
+// Layouts&Pages
 import MainLayout from "./layouts/MainLayout/MainLayout.tsx";
+import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import Cart from "./pages/Cart/index.tsx";
-import "./index.css";
+import CustomerDashboardPage from "./pages/Customer/index.tsx";
+import ManagerDashboardPage from "./pages/Manager/index.tsx";
+import StaffDasboardPage from "./pages/Staff/index.tsx";
+import ExecutiveDashboardPage from "./pages/Executive/index.tsx";
+import KitchenStaffDashboardPage from "./pages/KitchenStaff/index.tsx";
 import App from "./App.tsx";
+// styles
+import "./index.css";
 
 const theme = createTheme({
   colors: {
@@ -78,6 +86,37 @@ const router = createBrowserRouter([
       {
         path: "about",
         element: <AboutPage />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard/",
+    element: <DashboardLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      // {
+      //   index: true,
+      //   element: <App />,
+      // },
+      {
+        path: "customer",
+        element: <CustomerDashboardPage />,
+      },
+      {
+        path: "staff",
+        element: <StaffDasboardPage />,
+      },
+      {
+        path: "manager",
+        element: <ManagerDashboardPage />,
+      },
+      {
+        path: "executive",
+        element: <ExecutiveDashboardPage />,
+      },
+      {
+        path: "kitchen-staff",
+        element: <KitchenStaffDashboardPage />,
       },
     ],
   },
