@@ -9,8 +9,6 @@ const MyDetails = () => {
     fetchEmployeeDetail();
   }, [fetchEmployeeDetail]);
 
-  console.log("EmployeeDetail >>> ", employeeDetail);
-
   return (
     <div style={{ color: "red", fontSize: "1.5rem" }}>
       <h1>My details: </h1>
