@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 import axios from "axios";
 
@@ -14,14 +15,33 @@ interface MenuItem {
   preparation_time?: string;
 }
 
+interface User {
+  id: string;
+  username: string;
+  name?: string;
+  email: string;
+  status: string;
+  token: string;
+  // position: typeof userTypes;
+  position: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 interface StoreState {
+  // Menu Items displayed on page
   menuItems: MenuItem[];
   fetchMenuItems: () => Promise<void>;
 
-  cartItems: string[];
-  addItemToCart: (item: string) => void;
-  removeItemFromCart: (index: number) => void;
-  updateItemToCart: (index: number, newItem: string) => void;
+  // User LoggedIn and Signup
+  user: User;
+  signupUser: (data: any) => Promise<void>;
+  loginUser: (data: any) => Promise<void>;
+
+  // cartItems: string[];
+  // addItemToCart: (item: string) => void;
+  // removeItemFromCart: (index: number) => void;
+  // updateItemToCart: (index: number, newItem: string) => void;
 }
 
 // Create the store with type safety
@@ -44,32 +64,91 @@ const useStore = create<StoreState>((set) => ({
     }
   },
 
+  // User Object in store
+  user: {
+    id: "",
+    username: "",
+    email: "",
+    status: "",
+    token: "",
+    // position: [userTypes[1]],
+    position: "",
+  },
+
+  signupUser: async (data) => {
+    const url = "/api/users/register";
+    const headers = {
+      // Authorization: "Bearer YOUR_ACCESS_TOKEN",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+    const body = {
+      username: data.username,
+      password: data.password,
+      email: data.email,
+      status: "active",
+    };
+
+    try {
+      const response = await axios.post(url, body, { headers });
+      console.log("user-response >>> ", response);
+      // set({ user: response?.data?.data || [] });
+      set((state) => ({
+        user: { ...state.user, ...response?.data?.data }, // Update user immutably
+      }));
+    } catch (error) {
+      console.error("Error from API: ", error);
+    }
+  },
+
+  loginUser: async (data) => {
+    const url =
+      data.role === "customer" ? "/api/users/login" : "/api/employee/login";
+    const headers = {
+      // Authorization: "Bearer YOUR_ACCESS_TOKEN",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+    const body = {
+      password: data.password,
+      email: data.email,
+    };
+
+    try {
+      const response = await axios.post(url, body, { headers });
+      console.log("user-response >>> ", response);
+      // set({ user: response?.data?.data || [] });
+      set((state) => ({
+        user: { ...state.user, ...response?.data?.data }, // Update user immutably
+      }));
+    } catch (error) {
+      console.error("Error from API: ", error);
+    }
+  },
+
+  // TOBE: Added later below -----------------------------------------------------------------------------------
   //   addMenutoStore: (item) =>
   //     set((state) => ({
   //       menuItems: [...state.cartItems, item],
   //     })),
-
-  cartItems: [],
-
-  //   Adding items to the cart
-  addItemToCart: (item) =>
-    set((state) => ({
-      cartItems: [...state.cartItems, item],
-    })),
-
-  // Removing Items from the cart
-  removeItemFromCart: (index) =>
-    set((state) => ({
-      cartItems: state.cartItems.filter((_, i) => i !== index),
-    })),
-
-  // Updating items in the car
-  updateItemToCart: (index, newItem) =>
-    set((state) => ({
-      cartItems: state.cartItems.map((item, i) =>
-        i === index ? newItem : item
-      ),
-    })),
+  // cartItems: [],
+  // //   Adding items to the cart
+  // addItemToCart: (item) =>
+  //   set((state) => ({
+  //     cartItems: [...state.cartItems, item],
+  //   })),
+  // // Removing Items from the cart
+  // removeItemFromCart: (index) =>
+  //   set((state) => ({
+  //     cartItems: state.cartItems.filter((_, i) => i !== index),
+  //   })),
+  // // Updating items in the car
+  // updateItemToCart: (index, newItem) =>
+  //   set((state) => ({
+  //     cartItems: state.cartItems.map((item, i) =>
+  //       i === index ? newItem : item
+  //     ),
+  //   })),
 }));
 
 export default useStore;

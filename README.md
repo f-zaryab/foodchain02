@@ -1,6 +1,6 @@
 # Royal Fried Chicken
 
-The frontend app for RFC business model. The frontend app includes menu display and login dashboards.
+The frontend app for RFC business model. The frontend app includes menu display and login dashboards. The app's frontend is built on react and to manage data state, Zustand is used.
 
 ## Branching Rules
 

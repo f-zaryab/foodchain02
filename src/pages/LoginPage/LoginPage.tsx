@@ -1,5 +1,12 @@
+// lib
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FloatingIndicator, Tabs } from "@mantine/core";
+import { IconArrowLeft } from "@tabler/icons-react";
+// src
+import Signup from "../../components/Signup";
+import Login from "../../components/Login";
+// styles
 import classes from "./LoingPage.module.css";
 
 const LoginPage = () => {
@@ -15,6 +22,19 @@ const LoginPage = () => {
 
   return (
     <section className={classes.layout} id="login-signup-section">
+      <div className={classes.backBtnContainer}>
+        <Link to="/" className={classes.linkStyles}>
+          <IconArrowLeft
+            style={{
+              width: "2rem",
+              height: "2rem",
+              borderRadius: "50%",
+            }}
+          />
+          Go Back to home
+        </Link>
+      </div>
+
       <div className={classes.formSection}>
         <Tabs variant="none" value={value} onChange={setValue}>
           <Tabs.List ref={setRootRef} className={classes.list}>
@@ -40,8 +60,12 @@ const LoginPage = () => {
             />
           </Tabs.List>
 
-          <Tabs.Panel value="1">Sign up form here</Tabs.Panel>
-          <Tabs.Panel value="2">login form here</Tabs.Panel>
+          <Tabs.Panel value="1">
+            <Signup />
+          </Tabs.Panel>
+          <Tabs.Panel value="2">
+            <Login />
+          </Tabs.Panel>
         </Tabs>
       </div>
       <div id="image" className={classes.sideGradient} />

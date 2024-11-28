@@ -19,12 +19,17 @@
   padding: 5rem 2rem;
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 5rem;
 }
 
 .list {
   position: relative;
   margin-bottom: var(--mantine-spacing-md);
-  gap: 1rem;
+  gap: 1.2rem;
+  display: flex;
+  justify-content: center;
 }
 
 .indicator {
@@ -57,4 +62,17 @@
       color: var(--mantine-color-white);
     }
   }
+}
+
+.backBtnContainer {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+}
+
+.linkStyles {
+  display: flex;
+  align-items: center;
+  color: black;
+  gap: 0.5rem;
 }

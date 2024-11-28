@@ -21,6 +21,7 @@ import {
   ScrollArea,
   SimpleGrid,
   Text,
+  Avatar,
   //   ThemeIcon,
   UnstyledButton,
   useMantineTheme,
@@ -29,6 +30,7 @@ import { useDisclosure } from "@mantine/hooks";
 // import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Header.module.css";
 import { Link } from "react-router-dom";
+import useStore from "../../store/store";
 
 const mockdata = [
   {
@@ -68,6 +70,7 @@ export function HeaderMegaMenu() {
     useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const { user } = useStore();
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -154,11 +157,19 @@ export function HeaderMegaMenu() {
 
           {/* Login Button */}
           <Group visibleFrom="sm">
-            <Button variant="default">
-              <Link to="/login" className={classes.link}>
-                Login
-              </Link>
-            </Button>
+            {user.token ? (
+              <Avatar color="cyan" radius="xl">
+                {user?.name
+                  ? user?.name[0]?.toUpperCase()
+                  : user?.username[0]?.toUpperCase()}
+              </Avatar>
+            ) : (
+              <Button variant="default">
+                <Link to="/login" className={classes.link}>
+                  Login
+                </Link>
+              </Button>
+            )}
           </Group>
 
           <Burger

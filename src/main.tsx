@@ -5,8 +5,9 @@ import { MantineProvider, createTheme } from "@mantine/core";
 import "@mantine/core/styles.css";
 import MainLayout from "./layouts/MainLayout/MainLayout.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
-import LoginPage from "./pages/LoginPage.tsx";
+import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
+import Cart from "./pages/Cart/index.tsx";
 import "./index.css";
 import App from "./App.tsx";
 
@@ -83,6 +84,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/cart12",
+    element: <Cart />,
     errorElement: <NotFoundPage />,
   },
 ]);
