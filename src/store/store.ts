@@ -2,6 +2,9 @@
 import { create } from "zustand";
 import axios from "axios";
 
+const apiUrl =
+  import.meta.env.NEXT_PUBLIC_API_URL || import.meta.env.VITE_PUBLIC_API_URL;
+
 interface MenuItem {
   id: string;
   name: string;
@@ -49,12 +52,14 @@ const useStore = create<StoreState>((set) => ({
   menuItems: [],
 
   fetchMenuItems: async () => {
-    const url = "/api/menu/get";
+    const url = `${apiUrl}/api/menu/get`;
     const headers = {
       // Authorization: "Bearer YOUR_ACCESS_TOKEN",
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     };
+
+    console.log("API URL:", apiUrl);
 
     try {
       const response = await axios.get(url, { headers });
@@ -103,7 +108,9 @@ const useStore = create<StoreState>((set) => ({
 
   loginUser: async (data) => {
     const url =
-      data.role === "customer" ? "/api/users/login" : "/api/employee/login";
+      data.role === "customer"
+        ? `${apiUrl}/api/users/login`
+        : `${apiUrl}/api/employee/login`;
     const headers = {
       // Authorization: "Bearer YOUR_ACCESS_TOKEN",
       "Content-Type": "application/json",
