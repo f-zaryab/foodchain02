@@ -153,6 +153,14 @@ export function HeaderMegaMenu() {
             <Link to="/about" className={classes.link}>
               About
             </Link>
+
+            <Link to="/dashboard/customer" className={classes.link}>
+              Dash/customer
+            </Link>
+
+            <Link to="/dashboard/manager" className={classes.link}>
+              Dash/Manager
+            </Link>
           </Group>
 
           {/* Login Button */}

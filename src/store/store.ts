@@ -40,7 +40,17 @@ interface StoreState {
   user: User;
   signupUser: (data: any) => Promise<void>;
   loginUser: (data: any) => Promise<void>;
-
+  employeeDetail: {
+    id: string;
+    name: string;
+    restaurant_id: string;
+    position: string;
+    hireDate: string;
+    salary: string;
+    status: string;
+    email: string;
+  };
+  fetchEmployeeDetail: () => Promise<void>;
   // cartItems: string[];
   // addItemToCart: (item: string) => void;
   // removeItemFromCart: (index: number) => void;
@@ -48,7 +58,7 @@ interface StoreState {
 }
 
 // Create the store with type safety
-const useStore = create<StoreState>((set) => ({
+const useStore = create<StoreState>((set, get) => ({
   menuItems: [],
 
   fetchMenuItems: async () => {
@@ -130,6 +140,33 @@ const useStore = create<StoreState>((set) => ({
       }));
     } catch (error) {
       console.error("Error from API: ", error);
+    }
+  },
+
+  employeeDetail: {
+    email: "",
+    hireDate: "",
+    id: "",
+    name: "",
+    position: "",
+    restaurant_id: "",
+    salary: "",
+    status: "",
+  },
+
+  fetchEmployeeDetail: async () => {
+    const url = `${apiUrl}/api/employee/get`;
+    const headers = {
+      Authorization: `Bearer ${get().user.token}`,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    try {
+      const response = await axios.get(url, { headers });
+      set({ employeeDetail: response?.data?.data || [] });
+    } catch (error) {
+      console.error("Failed to fetch menu items:", error);
     }
   },
 
