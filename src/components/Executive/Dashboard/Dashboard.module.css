@@ -1,0 +1,12 @@
+.parentContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.innerContainer {
+  margin: 10px;
+}
+
+button {
+  margin: 5px;
+}
