@@ -15,3 +15,5 @@ The frontend app for RFC business model. The frontend app includes menu display 
 ### References
 
 - [MantineComponents](https://ui.mantine.dev/)
+
+<!-- "rewrites": [{ "source": "/(.*)", "destination": "/" }], -->
