@@ -1,23 +1,22 @@
-// lib
 import { useEffect } from "react";
 import { Grid } from "@mantine/core";
 import { useLocation } from "react-router-dom";
-// src
 import CardMenu from "../../components/CardMenu";
 import useStore from "../../store/store";
-// css
 import classes from "./MenuItemList.module.css";
 
 const MenuItemsList = () => {
-  const { menuItems, fetchMenuItems } = useStore();
-
+  const { menuItems, fetchMenuItems, addItemToCart } = useStore();
   const { state } = useLocation();
   const { targetId } = state || {};
+  const { notification, setNotification } = useStore();
 
+  // Fetch menu items on component load
   useEffect(() => {
     fetchMenuItems();
   }, [fetchMenuItems]);
 
+  // Scroll to target element if specified
   useEffect(() => {
     const el = document.getElementById(targetId);
     if (el) {
@@ -25,8 +24,16 @@ const MenuItemsList = () => {
     }
   }, [targetId]);
 
+  // Show notification
+  useEffect(() => {
+    if (notification) {
+      alert(notification); // Display the notification
+      setNotification(null); // Clear the notification after showing it
+    }
+  }, [notification, setNotification]);
+
   return (
-    <section id="menu" className={classes.gridSection}>
+    <section id='menu' className={classes.gridSection}>
       <div className={classes.internalContainer}>
         <h1 className={classes.heading}>Our Menu</h1>
 
@@ -39,7 +46,8 @@ const MenuItemsList = () => {
                   description={item.description}
                   id={item.id}
                   price={item.price}
-                  image="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
+                  image={item.image}
+                  onAddToCart={() => addItemToCart(item)}
                 />
               </Grid.Col>
             ))}

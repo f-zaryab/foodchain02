@@ -1,3 +1,159 @@
-.heading {
-  color: blue;
+.cartContainer {
+  max-width: 800px;
+  margin: auto;
+  background-color: #ffffff; /* Add background for better visual appeal */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+.cartHeaderContainer {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.cartHeader {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #333; /* Use a darker shade for text */
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.cartQuantityInput {
+  max-width: 60px;
+  text-align: center;
+}
+
+.removeButton {
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.removeButton:hover {
+  background-color: #ffebeb;
+  color: #d32f2f; /* Add a subtle red text color on hover */
+}
+
+.cartTotalGroup {
+  font-size: 1.2rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.checkoutButton {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: uppercase;
+  padding: 0.8rem;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.checkoutButton:hover {
+  background-color: #45a049;
+  transform: translateY(-2px); /* Add a subtle lift effect */
+}
+
+.goBackButton {
+  border-color: #1976d2;
+  color: #1976d2;
+  font-weight: bold;
+}
+
+.goBackButton:hover {
+  background-color: #e3f2fd;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between buttons and number */
+}
+
+.quantityControl button {
+  width: 30px;
+  height: 30px;
+  font-size: 1.2rem;
+  padding: 0;
+  line-height: 1;
+  color: #4caf50;
+  border: 1px solid #4caf50;
+  border-radius: 5px; /* Rounded corners for buttons */
+  background: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.quantityControl button:hover {
+  background-color: #4caf50;
+  color: white;
+}
+
+.quantityControl text {
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.styledTable {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.styledTable th,
+.styledTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.styledTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.styledTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+.styledTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4caf50;
+  color: white;
+}
+
+.notificationError {
+  border-radius: 8px;
+  background-color: #ffe0e0;
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.paperContainer {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+.cartTotalGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px; /* Space between "Total" and price */
+  font-size: 1.2rem;
+  align-items: center;
+}
+
+.totalLabel {
+  font-weight: bold;
+  color: #333;
+}
+
+.totalValue {
+  font-weight: bold;
+  color: #4caf50;
+  font-size: 1.4rem;
 }

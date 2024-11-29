@@ -71,18 +71,23 @@ export function HeaderMegaMenu() {
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
   const { user } = useStore();
+  const { cartItems } = useStore();
+  const totalCartItems = cartItems?.reduce(
+    (sum, item) => sum + (item.quantity || 0),
+    0
+  );
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
-      <Group wrap="nowrap" align="flex-start">
+      <Group wrap='nowrap' align='flex-start'>
         {/* <ThemeIcon size={34} variant="default" radius="md">
           <item.icon size={22} color={theme.colors.blue[6]} />
         </ThemeIcon> */}
         <div>
-          <Text size="sm" fw={500}>
+          <Text size='sm' fw={500}>
             {item.title}
           </Text>
-          <Text size="xs" c="dimmed">
+          <Text size='xs' c='dimmed'>
             {item.description}
           </Text>
         </div>
@@ -93,26 +98,26 @@ export function HeaderMegaMenu() {
   return (
     <Box pb={120}>
       <header className={classes.header}>
-        <Group justify="space-between" h="100%">
+        <Group justify='space-between' h='100%'>
           {/* <MantineLogo size={30} /> */}
           <div>Logo</div>
 
-          <Group h="100%" gap={0} visibleFrom="sm">
-            <Link to="/" className={classes.link}>
+          <Group h='100%' gap={0} visibleFrom='sm'>
+            <Link to='/' className={classes.link}>
               Home
             </Link>
 
             <HoverCard
               width={600}
-              position="bottom"
-              radius="md"
-              shadow="md"
+              position='bottom'
+              radius='md'
+              shadow='md'
               withinPortal
             >
               <HoverCard.Target>
-                <a href="#" className={classes.link}>
+                <a href='#' className={classes.link}>
                   <Center inline>
-                    <Box component="span" mr={5}>
+                    <Box component='span' mr={5}>
                       Features
                     </Box>
                     {/* <IconChevronDown size={16} color={theme.colors.blue[6]} /> */}
@@ -121,59 +126,63 @@ export function HeaderMegaMenu() {
               </HoverCard.Target>
 
               <HoverCard.Dropdown style={{ overflow: "hidden" }}>
-                <Group justify="space-between" px="md">
+                <Group justify='space-between' px='md'>
                   <Text fw={500}>Features</Text>
-                  <Anchor href="#" fz="xs">
+                  <Anchor href='#' fz='xs'>
                     View all
                   </Anchor>
                 </Group>
 
-                <Divider my="sm" />
+                <Divider my='sm' />
 
                 <SimpleGrid cols={2} spacing={0}>
                   {links}
                 </SimpleGrid>
 
                 <div className={classes.dropdownFooter}>
-                  <Group justify="space-between">
+                  <Group justify='space-between'>
                     <div>
-                      <Text fw={500} fz="sm">
+                      <Text fw={500} fz='sm'>
                         Get started
                       </Text>
-                      <Text size="xs" c="dimmed">
+                      <Text size='xs' c='dimmed'>
                         Their food sources have decreased, and their numbers
                       </Text>
                     </div>
-                    <Button variant="default">Get started</Button>
+                    <Button variant='default'>Get started</Button>
                   </Group>
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
 
-            <Link to="/about" className={classes.link}>
+            <Link to='/about' className={classes.link}>
               About
             </Link>
 
-            <Link to="/dashboard/customer" className={classes.link}>
+            <Link to='/dashboard/customer' className={classes.link}>
               Dash/customer
             </Link>
 
-            <Link to="/dashboard/manager" className={classes.link}>
+            <Link to='/dashboard/manager' className={classes.link}>
               Dash/Manager
+            </Link>
+
+            <Link to='/cart' className={classes.link}>
+              Cart ({totalCartItems || 0})
             </Link>
           </Group>
 
           {/* Login Button */}
-          <Group visibleFrom="sm">
+          <Group visibleFrom='sm'>
             {user.token ? (
-              <Avatar color="cyan" radius="xl">
+              <Avatar color='cyan' radius='xl'>
                 {user?.name
                   ? user?.name[0]?.toUpperCase()
                   : user?.username[0]?.toUpperCase()}
               </Avatar>
             ) : (
-              <Button variant="default">
-                <Link to="/login" className={classes.link}>
+              <Button variant='default'>
+                <Link to='/login' className={classes.link}>
                   Login
                 </Link>
               </Button>
@@ -183,7 +192,7 @@ export function HeaderMegaMenu() {
           <Burger
             opened={drawerOpened}
             onClick={toggleDrawer}
-            hiddenFrom="sm"
+            hiddenFrom='sm'
           />
         </Group>
       </header>
@@ -191,38 +200,38 @@ export function HeaderMegaMenu() {
       <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
-        size="100%"
-        padding="md"
-        title="Navigation"
-        hiddenFrom="sm"
+        size='100%'
+        padding='md'
+        title='Navigation'
+        hiddenFrom='sm'
         zIndex={1000000}
       >
-        <ScrollArea h="calc(100vh - 80px" mx="-md">
-          <Divider my="sm" />
+        <ScrollArea h='calc(100vh - 80px' mx='-md'>
+          <Divider my='sm' />
 
-          <a href="#" className={classes.link}>
+          <a href='#' className={classes.link}>
             Home
           </a>
           <UnstyledButton className={classes.link} onClick={toggleLinks}>
             <Center inline>
-              <Box component="span" mr={5}>
+              <Box component='span' mr={5}>
                 Features
               </Box>
               <IconChevronDown size={16} color={theme.colors.blue[6]} />
             </Center>
           </UnstyledButton>
           <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
+          <a href='#' className={classes.link}>
             Learn
           </a>
-          <a href="#" className={classes.link}>
+          <a href='#' className={classes.link}>
             Academy
           </a>
 
-          <Divider my="sm" />
+          <Divider my='sm' />
 
-          <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
+          <Group justify='center' grow pb='xl' px='md'>
+            <Button variant='default'>Log in</Button>
             <Button>Sign up</Button>
           </Group>
         </ScrollArea>
