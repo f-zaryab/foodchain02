@@ -16,6 +16,11 @@ import StaffDasboardPage from "./pages/Staff/index.tsx";
 import ExecutiveDashboardPage from "./pages/Executive/index.tsx";
 import KitchenStaffDashboardPage from "./pages/KitchenStaff/index.tsx";
 import App from "./App.tsx";
+import KitchenData from "./components/Executive/KitchenData/index.tsx";
+import SuppliersData from "./components/Executive/SuppliersData/index.tsx";
+import InventoryPage from "./components/Executive/InventoryPage/index.tsx";
+import MetricsPage from "./components/Executive/MetricsPage/index.tsx";
+
 // styles
 import "./index.css";
 
@@ -119,6 +124,26 @@ const router = createBrowserRouter([
         element: <KitchenStaffDashboardPage />,
       },
     ],
+  },
+  {
+    path: "/dashboard/executive/kitchen-data",
+    element: <KitchenData />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/dashboard/executive/suppliers-data",
+    element: <SuppliersData />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/dashboard/executive/check_inventory",
+    element: <InventoryPage />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path: "/dashboard/executive/get-metrics",
+    element: <MetricsPage />,
+    errorElement: <NotFoundPage />,
   },
   {
     path: "/login",
