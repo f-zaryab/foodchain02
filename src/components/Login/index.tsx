@@ -50,7 +50,7 @@ const Login = () => {
         navigate("/dashboard/staff");
       } else if (user.position.toLocaleLowerCase() === "manager") {
         navigate("/dashboard/manager");
-      } else if (user.position.toLocaleLowerCase() === "kitchen-staff") {
+      } else if (user.position.toLocaleLowerCase() === "kitchen_staff") {
         navigate("/dashboard/kitchen-staff");
       } else if (user.position.toLocaleLowerCase() === "executive") {
         navigate("/dashboard/executive");
@@ -96,7 +96,9 @@ const Login = () => {
         />
 
         <Group justify="flex-end" mt="md" style={{ marginTop: 20 }}>
-          <Button type="submit">Login</Button>
+          <Button type="submit" color="red.0">
+            Login
+          </Button>
         </Group>
       </form>
     </div>

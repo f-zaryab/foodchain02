@@ -1,35 +1,19 @@
 import {
-  //   IconBook,
-  //   IconChartPie3,
-  IconChevronDown,
-  //   IconCode,
-  //   IconCoin,
-  //   IconFingerprint,
-  //   IconNotification,
-} from "@tabler/icons-react";
-import {
-  Anchor,
   Box,
   Burger,
   Button,
-  Center,
   Collapse,
-  Divider,
   Drawer,
   Group,
-  HoverCard,
   ScrollArea,
-  SimpleGrid,
   Text,
   Avatar,
-  //   ThemeIcon,
   UnstyledButton,
-  useMantineTheme,
+  Menu,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-// import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Header.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useStore from "../../store/store";
 
 const mockdata = [
@@ -68,16 +52,13 @@ const mockdata = [
 export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const theme = useMantineTheme();
-  const { user } = useStore();
+  const [linksOpened] = useDisclosure(false);
+  const { user, logoutUser } = useStore();
+  const navigate = useNavigate();
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
       <Group wrap="nowrap" align="flex-start">
-        {/* <ThemeIcon size={34} variant="default" radius="md">
-          <item.icon size={22} color={theme.colors.blue[6]} />
-        </ThemeIcon> */}
         <div>
           <Text size="sm" fw={500}>
             {item.title}
@@ -89,6 +70,14 @@ export function HeaderMegaMenu() {
       </Group>
     </UnstyledButton>
   ));
+
+  const handleLogout = () => {
+    if (user.token) {
+      logoutUser();
+
+      navigate("/login");
+    }
+  };
 
   return (
     <Box>
@@ -102,75 +91,35 @@ export function HeaderMegaMenu() {
               Home
             </Link>
 
-            <HoverCard
-              width={600}
-              position="bottom"
-              radius="md"
-              shadow="md"
-              withinPortal
-            >
-              <HoverCard.Target>
-                <a href="#" className={classes.link}>
-                  <Center inline>
-                    <Box component="span" mr={5}>
-                      Features
-                    </Box>
-                    {/* <IconChevronDown size={16} color={theme.colors.blue[6]} /> */}
-                  </Center>
-                </a>
-              </HoverCard.Target>
-
-              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
-                <Group justify="space-between" px="md">
-                  <Text fw={500}>Features</Text>
-                  <Anchor href="#" fz="xs">
-                    View all
-                  </Anchor>
-                </Group>
-
-                <Divider my="sm" />
-
-                <SimpleGrid cols={2} spacing={0}>
-                  {links}
-                </SimpleGrid>
-
-                <div className={classes.dropdownFooter}>
-                  <Group justify="space-between">
-                    <div>
-                      <Text fw={500} fz="sm">
-                        Get started
-                      </Text>
-                      <Text size="xs" c="dimmed">
-                        Their food sources have decreased, and their numbers
-                      </Text>
-                    </div>
-                    <Button variant="default">Get started</Button>
-                  </Group>
-                </div>
-              </HoverCard.Dropdown>
-            </HoverCard>
-
             <Link to="/about" className={classes.link}>
               About
-            </Link>
-
-            <Link to="/dashboard/customer" className={classes.link}>
-              Dash/customer
-            </Link>
-
-            <Link to="/dashboard/manager" className={classes.link}>
-              Dash/Manager
             </Link>
           </Group>
 
           {/* Login Button */}
           <Group visibleFrom="sm">
             {user.token ? (
-              <Avatar color="cyan" radius="xl">
-                {user?.name
-                  ? user?.name[0]?.toUpperCase()
-                  : user?.username[0]?.toUpperCase()}
-              </Avatar>
+              <Menu shadow="md">
+                <Menu.Target>
+                  <Avatar
+                    color="cyan"
+                    radius="xl"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {user?.name
+                      ? user?.name[0]?.toUpperCase()
+                      : user?.username[0]?.toUpperCase()}
+                  </Avatar>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                  <Menu.Label>
+                    <Button color="red.0" onClick={() => handleLogout()}>
+                      Logout
+                    </Button>
+                  </Menu.Label>
+                </Menu.Dropdown>
+              </Menu>
             ) : (
               <Button variant="default">
                 <Link to="/login" className={classes.link}>
@@ -198,33 +147,16 @@ export function HeaderMegaMenu() {
         zIndex={1000000}
       >
         <ScrollArea h="calc(100vh - 80px" mx="-md">
-          <Divider my="sm" />
-
-          <a href="#" className={classes.link}>
+          <a href="/" className={classes.link}>
             Home
           </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown size={16} color={theme.colors.blue[6]} />
-            </Center>
-          </UnstyledButton>
           <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
+          <a href="/about" className={classes.link}>
             Learn
           </a>
-          <a href="#" className={classes.link}>
-            Academy
+          <a href="/login" className={classes.link}>
+            Login
           </a>
-
-          <Divider my="sm" />
-
-          <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
-          </Group>
         </ScrollArea>
       </Drawer>
     </Box>

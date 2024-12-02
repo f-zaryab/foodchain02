@@ -13,7 +13,9 @@ const ManagerDashboardPage = () => {
   return (
     <div className={classes.mainContainer}>
       <div className={classes.infoSection}>
-        <h1 className={classes.mainHeading}>Manager: My Dashboard</h1>
+        <h1 className={classes.mainHeading}>
+          <span className={classes.spanHeading}>Manager:</span> My Dashboard
+        </h1>
         <CardUserInfo />
       </div>
 

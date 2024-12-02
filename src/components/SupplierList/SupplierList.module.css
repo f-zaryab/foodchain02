@@ -1,5 +1,4 @@
 .mainContainer {
-  width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -11,24 +10,26 @@
   text-align: left;
 }
 
-.execardContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-.statsSummary {
-  color: red;
-  font-size: 1rem;
-  font-weight: 700;
-  text-align: left;
-}
-
 .labelDivider {
   span {
     font-size: 1.25rem;
     font-weight: 700;
     color: red;
   }
+}
+
+.formStyles {
+  text-align: left;
+  padding: 1rem;
+  width: 50%;
+}
+
+.badgeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.badge {
+  width: 100%;
 }

@@ -21,7 +21,7 @@ const FeaturedItems = () => {
           <Button
             variant="filled"
             color="red.0"
-            radius="sm"
+            radius="xl"
             className={classes.exploreMenuBtn}
             onClick={() => navigate("#menu", { state: { targetId: "menu" } })}
           >

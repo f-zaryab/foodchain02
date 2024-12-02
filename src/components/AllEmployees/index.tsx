@@ -202,7 +202,7 @@ const AllEmployees = () => {
 
         <Group justify="flex-end" mt="md" style={{ marginTop: 20 }}>
           <Button type="submit" color="red.0">
-            Create Menu
+            Create Employee
           </Button>
         </Group>
       </form>

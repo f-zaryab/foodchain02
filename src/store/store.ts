@@ -65,12 +65,37 @@ interface KitchenDetail {
   updated_at: string;
 }
 
+interface Supplier {
+  id: string;
+  name: string;
+  contact_person: string;
+  email: string;
+  phone: string;
+  address: string;
+  payment_terms: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+interface InventoryTransactionItem {
+  transaction_id: string;
+  inventory_id: string;
+  kitchen_id: string;
+  type: string;
+  quantity: string;
+  transaction_date: string;
+  recorded_by: string;
+  notes: string;
+}
+
 interface StoreState {
   menuItems: MenuItem[];
   fetchMenuItems: () => Promise<void>;
   user: User;
   signupUser: (data: any) => Promise<void>;
   loginUser: (data: any) => Promise<void>;
+  logoutUser: () => void;
   employeeDetail: {
     id: string;
     name: string;
@@ -84,6 +109,8 @@ interface StoreState {
   fetchEmployeeDetail: () => Promise<void>;
   restMetrics: RestaurantMetrics[];
   fetchRestMetrics: (id: string) => Promise<void>;
+  restMetricsExecAll: RestaurantMetrics[];
+  fetchRestMetricsAllExec: () => Promise<void>;
   kitchenList: KitchenDetail[];
   fetchKitchenList: () => Promise<void>;
   kitchenDetail: KitchenDetail[];
@@ -94,11 +121,12 @@ interface StoreState {
   fetchAllEmployees: () => Promise<void>;
   createdEmployee: Employee[];
   creatingEmployeeByManager: (data: any) => Promise<void>;
-
-  // cartItems: string[];
-  // addItemToCart: (item: string) => void;
-  // removeItemFromCart: (index: number) => void;
-  // updateItemToCart: (index: number, newItem: string) => void;
+  suppliers: Supplier[];
+  fetchSupplierList: () => Promise<void>;
+  createdSupplier: Supplier[];
+  createSupplier: (data: any) => Promise<void>;
+  inventoryTransactions: InventoryTransactionItem[];
+  fetchInventoryTransactions: () => Promise<void>;
 }
 
 // Create the store with type safety
@@ -182,6 +210,22 @@ const useStore = create<StoreState>((set, get) => ({
     }
   },
 
+  logoutUser: () => {
+    set({
+      user: {
+        email: "",
+        id: "",
+        position: "",
+        status: "",
+        token: "",
+        username: "",
+        createdAt: "",
+        name: "",
+        updatedAt: "",
+      },
+    });
+  },
+
   employeeDetail: {
     email: "",
     hireDate: "",
@@ -227,10 +271,35 @@ const useStore = create<StoreState>((set, get) => ({
     }
   },
 
+  restMetricsExecAll: [],
+
+  fetchRestMetricsAllExec: async () => {
+    const url = `${apiUrl}/api/v1/internal/executive/restaurantMetrics`;
+    const headers = {
+      Authorization: `Bearer ${get().user.token}`,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    try {
+      const response = await axios.get(url, { headers });
+      set({
+        restMetricsExecAll: response?.data?.data?.restaurantMetrics || [],
+      });
+    } catch (error) {
+      console.error("Failed to fetch menu items:", error);
+    }
+  },
+
   kitchenList: [],
 
   fetchKitchenList: async () => {
-    const url = `${apiUrl}/api/v1/internal/manager/kitchen`;
+    const url =
+      get().user.position === "MANAGER"
+        ? `${apiUrl}/api/v1/internal/manager/kitchen`
+        : get().user.position === "EXECUTIVE"
+        ? `${apiUrl}/api/v1/internal/executive/kitchen`
+        : `${apiUrl}/api/v1/internal/kitchenStaff/kitchen`;
     const headers = {
       Authorization: `Bearer ${get().user.token}`,
       "Content-Type": "application/json",
@@ -343,29 +412,83 @@ const useStore = create<StoreState>((set, get) => ({
     }
   },
 
-  // TOBE: Added later below -----------------------------------------------------------------------------------
-  //   addMenutoStore: (item) =>
-  //     set((state) => ({
-  //       menuItems: [...state.cartItems, item],
-  //     })),
-  // cartItems: [],
-  // //   Adding items to the cart
-  // addItemToCart: (item) =>
-  //   set((state) => ({
-  //     cartItems: [...state.cartItems, item],
-  //   })),
-  // // Removing Items from the cart
-  // removeItemFromCart: (index) =>
-  //   set((state) => ({
-  //     cartItems: state.cartItems.filter((_, i) => i !== index),
-  //   })),
-  // // Updating items in the car
-  // updateItemToCart: (index, newItem) =>
-  //   set((state) => ({
-  //     cartItems: state.cartItems.map((item, i) =>
-  //       i === index ? newItem : item
-  //     ),
-  //   })),
+  suppliers: [],
+
+  fetchSupplierList: async () => {
+    const url =
+      get().user.position === "EXECUTIVE"
+        ? `${apiUrl}/api/v1/internal/executive/supplier`
+        : `${apiUrl}/api/v1/internal/kitchenStaff/supplier`;
+    const headers = {
+      Authorization: `Bearer ${get().user.token}`,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    try {
+      const response = await axios.get(url, { headers });
+      set({ suppliers: response?.data?.data?.suppliers || [] });
+    } catch (error) {
+      console.error("Failed to fetch menu items:", error);
+    }
+  },
+
+  createdSupplier: [],
+
+  createSupplier: async (data) => {
+    const url =
+      get().user.position === "EXECUTIVE"
+        ? `${apiUrl}/api/v1/internal/executive/supplier`
+        : `${apiUrl}/api/v1/internal/kitchenStaff/supplier`;
+    const headers = {
+      Authorization: `Bearer ${get().user.token}`,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+    const body = {
+      name: data.name,
+      contact_person: data.contact_person,
+      email: data.email,
+      phone: data.phone,
+      address: data.address,
+      payment_terms: data.payment_terms,
+      status: data.status,
+    };
+
+    try {
+      const response = await axios.post(url, body, { headers });
+      set({
+        createdEmployee: [response?.data?.data],
+      });
+      get().fetchSupplierList();
+    } catch (error) {
+      console.error("Error from API: ", error);
+    }
+  },
+
+  inventoryTransactions: [],
+
+  fetchInventoryTransactions: async () => {
+    const url =
+      get().user.position === "EXECUTIVE"
+        ? `${apiUrl}/api/v1/internal/executive/inventoryTransactions`
+        : `${apiUrl}/api/v1/internal/kitchenStaff/inventoryTransactions`;
+    const headers = {
+      Authorization: `Bearer ${get().user.token}`,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    try {
+      const response = await axios.get(url, { headers });
+      set({
+        inventoryTransactions:
+          response?.data?.data?.inventoryTransactions || [],
+      });
+    } catch (error) {
+      console.error("Failed to fetch menu items:", error);
+    }
+  },
 }));
 
 export default useStore;

@@ -11,20 +11,6 @@
   text-align: left;
 }
 
-.execardContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-.statsSummary {
-  color: red;
-  font-size: 1rem;
-  font-weight: 700;
-  text-align: left;
-}
-
 .labelDivider {
   span {
     font-size: 1.25rem;
