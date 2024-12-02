@@ -18,6 +18,13 @@ interface MenuItem {
   preparation_time?: string;
 }
 
+interface CartItem {
+  id: string;
+  name: string;
+  quantity: number;
+  price: number;
+}
+
 interface User {
   id: string;
   username: string;
@@ -25,7 +32,6 @@ interface User {
   email: string;
   status: string;
   token: string;
-  // position: typeof userTypes;
   position: string;
   createdAt?: string;
   updatedAt?: string;
@@ -90,6 +96,15 @@ interface InventoryTransactionItem {
 }
 
 interface StoreState {
+  // Cart Management
+  cartItems: CartItem[];
+  addItemToCart: (item: MenuItem) => void;
+  updateCartItem: (itemId: string, quantity: number) => void;
+  removeItemFromCart: (itemId: string) => void;
+  clearCart: () => void;
+  checkout: () => Promise<void>;
+  notification: string | null;
+  setNotification: (message: string | null) => void; 
   menuItems: MenuItem[];
   fetchMenuItems: () => Promise<void>;
   user: User;
@@ -132,6 +147,9 @@ interface StoreState {
 // Create the store with type safety
 const useStore = create<StoreState>((set, get) => ({
   menuItems: [],
+  cartItems: [],
+  notification: null,
+  setNotification: (message) => set({ notification: message }),
 
   fetchMenuItems: async () => {
     const url = `${apiUrl}/api/menu/get`;
@@ -155,14 +173,12 @@ const useStore = create<StoreState>((set, get) => ({
     email: "",
     status: "",
     token: "",
-    // position: [userTypes[1]],
     position: "",
   },
 
   signupUser: async (data) => {
     const url = "/api/users/register";
     const headers = {
-      // Authorization: "Bearer YOUR_ACCESS_TOKEN",
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     };
@@ -175,9 +191,8 @@ const useStore = create<StoreState>((set, get) => ({
 
     try {
       const response = await axios.post(url, body, { headers });
-      // set({ user: response?.data?.data || [] });
       set((state) => ({
-        user: { ...state.user, ...response?.data?.data }, // Update user immutably
+        user: { ...state.user, ...response?.data?.data },
       }));
     } catch (error) {
       console.error("Error from API: ", error);
@@ -190,7 +205,6 @@ const useStore = create<StoreState>((set, get) => ({
         ? `${apiUrl}/api/users/login`
         : `${apiUrl}/api/employee/login`;
     const headers = {
-      // Authorization: "Bearer YOUR_ACCESS_TOKEN",
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     };
@@ -201,14 +215,50 @@ const useStore = create<StoreState>((set, get) => ({
 
     try {
       const response = await axios.post(url, body, { headers });
-      // set({ user: response?.data?.data || [] });
       set((state) => ({
-        user: { ...state.user, ...response?.data?.data }, // Update user immutably
+        user: { ...state.user, ...response?.data?.data },
       }));
     } catch (error) {
       console.error("Error from API: ", error);
     }
   },
+
+  addItemToCart: (item) => {
+    const existingItem = get().cartItems.find(
+      (cartItem) => cartItem.id === item.id
+    );
+    if (existingItem) {
+      set((state) => ({
+        cartItems: state.cartItems.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        ),
+        notification: `Updated quantity for ${item.name}`,
+      }));
+    } else {
+      set((state) => ({
+        cartItems: [
+          ...state.cartItems,
+          { id: item.id, name: item.name, quantity: 1, price: item.price },
+        ],
+        notification: `${item.name} added to cart`,
+      }));
+    }
+  },
+
+  updateCartItem: (itemId, quantity) => {
+    set((state) => ({
+      cartItems: state.cartItems.map((cartItem) =>
+        cartItem.id === itemId ? { ...cartItem, quantity } : cartItem
+      ),
+    }));
+  },
+
+  removeItemFromCart: (itemId) => {
+    set((state) => ({
+      cartItems: state.cartItems.filter((cartItem) => cartItem.id !== itemId),
+    }));
 
   logoutUser: () => {
     set({
@@ -237,19 +287,35 @@ const useStore = create<StoreState>((set, get) => ({
     status: "",
   },
 
-  fetchEmployeeDetail: async () => {
-    const url = `${apiUrl}/api/employee/get`;
+  clearCart: () => {
+    set({ cartItems: [] });
+  },
+
+  checkout: async () => {
+    const url = `${apiUrl}/api/orders/create`;
     const headers = {
       Authorization: `Bearer ${get().user.token}`,
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+    };
+    const body = {
+      customer_id: get().user.id,
+      items: get().cartItems.map((item) => ({
+        item_id: item.id,
+        quantity: item.quantity,
+        unit_price: item.price,
+        total_price: item.quantity * item.price,
+      })),
+      total_amount: get().cartItems.reduce(
+        (sum, item) => sum + item.quantity * item.price,
+        0
+      ),
     };
 
     try {
-      const response = await axios.get(url, { headers });
-      set({ employeeDetail: response?.data?.data || [] });
+      await axios.post(url, body, { headers });
+      get().clearCart(); // Clear cart after successful checkout
     } catch (error) {
-      console.error("Failed to fetch menu items:", error);
+      console.error("Checkout failed:", error);
     }
   },
 

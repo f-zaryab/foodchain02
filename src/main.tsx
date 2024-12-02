@@ -9,7 +9,7 @@ import DashboardLayout from "./layouts/DashboardLayout/DashboardLayout.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
-import Cart from "./pages/Cart/index.tsx";
+import { CartPage } from "./pages/Cart/index.tsx";
 import CustomerDashboardPage from "./pages/Customer/index.tsx";
 import ManagerDashboardPage from "./pages/Manager/index.tsx";
 import StaffDasboardPage from "./pages/Staff/index.tsx";
@@ -132,8 +132,8 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
   },
   {
-    path: "/cart12",
-    element: <Cart />,
+    path: "/cart",
+    element: <CartPage />,
     errorElement: <NotFoundPage />,
   },
 ]);
