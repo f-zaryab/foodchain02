@@ -104,7 +104,7 @@ interface StoreState {
   clearCart: () => void;
   checkout: () => Promise<void>;
   notification: string | null;
-  setNotification: (message: string | null) => void; 
+  setNotification: (message: string | null) => void;
   menuItems: MenuItem[];
   fetchMenuItems: () => Promise<void>;
   user: User;
@@ -259,6 +259,7 @@ const useStore = create<StoreState>((set, get) => ({
     set((state) => ({
       cartItems: state.cartItems.filter((cartItem) => cartItem.id !== itemId),
     }));
+  },
 
   logoutUser: () => {
     set({
@@ -285,6 +286,21 @@ const useStore = create<StoreState>((set, get) => ({
     restaurant_id: "",
     salary: "",
     status: "",
+  },
+
+  fetchEmployeeDetail: async () => {
+    const url = `${apiUrl}/api/employee/get`;
+    const headers = {
+      Authorization: `Bearer ${get().user.token}`,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+    try {
+      const response = await axios.get(url, { headers });
+      set({ employeeDetail: response?.data?.data || [] });
+    } catch (error) {
+      console.error("Checkout failed:", error);
+    }
   },
 
   clearCart: () => {

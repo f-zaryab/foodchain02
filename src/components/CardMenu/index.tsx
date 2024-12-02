@@ -7,7 +7,7 @@ interface CardMenuProps {
   description: string;
   price: number;
   image?: string;
-  onAddToCart: () => void; // New prop for handling Add to Cart
+  onAddToCart: () => void;
 }
 
 const CardMenu = ({
@@ -18,31 +18,29 @@ const CardMenu = ({
   onAddToCart,
 }: CardMenuProps) => {
   const defaultImage =
-    "https://static.vecteezy.com/system/resources/previews/027/579/683/original/choice-of-fresh-food-and-healthy-eating-vegetables-fruits-legumes-and-cereals-on-a-concrete-table-free-photo.jpg";
-
-  // console.log("image prop:", image);
+    "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png";
 
   return (
-    <Card shadow='sm' padding='lg' radius='md' withBorder>
+    <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>
-        <Image src={image || defaultImage} height={160} alt={name} />
+        <Image src={defaultImage || image} height={160} alt={name} />
       </Card.Section>
 
-      <Group justify='space-between' mt='md' mb='xs'>
+      <Group justify="space-between" mt="md" mb="xs">
         <Text fw={500}>{name}</Text>
-        <Badge color='pink'>GBP. {price}</Badge>
+        <Badge color="pink">GBP. {price}</Badge>
       </Group>
 
-      <Text size='sm' c='dimmed' className={classes.descriptionBox}>
+      <Text size="sm" c="dimmed" className={classes.descriptionBox}>
         {description}
       </Text>
 
       <Button
-        variant='filled'
-        color='red.0'
-        radius='sm'
+        variant="filled"
+        color="red.0"
+        radius="sm"
         className={classes.cartBtn}
-        onClick={onAddToCart} // Attach the handler here
+        onClick={onAddToCart}
       >
         Add to cart
       </Button>

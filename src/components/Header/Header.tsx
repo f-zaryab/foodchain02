@@ -52,23 +52,23 @@ const mockdata = [
 export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
+  const [linksOpened] = useDisclosure(false);
+  const { user, logoutUser, cartItems } = useStore();
+  const navigate = useNavigate();
+
   const totalCartItems = cartItems?.reduce(
     (sum, item) => sum + (item.quantity || 0),
     0
   );
 
-  const [linksOpened] = useDisclosure(false);
-  const { user, logoutUser, cartItems } = useStore();
-  const navigate = useNavigate();
-
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
       <Group wrap="nowrap" align="flex-start">
         <div>
-          <Text size='sm' fw={500}>
+          <Text size="sm" fw={500}>
             {item.title}
           </Text>
-          <Text size='xs' c='dimmed'>
+          <Text size="xs" c="dimmed">
             {item.description}
           </Text>
         </div>
@@ -87,26 +87,26 @@ export function HeaderMegaMenu() {
   return (
     <Box>
       <header className={classes.header}>
-        <Group justify='space-between' h='100%'>
+        <Group justify="space-between" h="100%">
           {/* <MantineLogo size={30} /> */}
           <div>Logo</div>
 
-          <Group h='100%' gap={0} visibleFrom='sm'>
-            <Link to='/' className={classes.link}>
+          <Group h="100%" gap={0} visibleFrom="sm">
+            <Link to="/" className={classes.link}>
               Home
             </Link>
 
-            <Link to='/about' className={classes.link}>
+            <Link to="/about" className={classes.link}>
               About
             </Link>
 
-            <Link to='/cart' className={classes.link}>
+            <Link to="/cart" className={classes.link}>
               Cart ({totalCartItems || 0})
             </Link>
           </Group>
 
           {/* Login Button */}
-          <Group visibleFrom='sm'>
+          <Group visibleFrom="sm">
             {user.token ? (
               <Menu shadow="md">
                 <Menu.Target>
@@ -130,8 +130,8 @@ export function HeaderMegaMenu() {
                 </Menu.Dropdown>
               </Menu>
             ) : (
-              <Button variant='default'>
-                <Link to='/login' className={classes.link}>
+              <Button variant="default">
+                <Link to="/login" className={classes.link}>
                   Login
                 </Link>
               </Button>
@@ -141,7 +141,7 @@ export function HeaderMegaMenu() {
           <Burger
             opened={drawerOpened}
             onClick={toggleDrawer}
-            hiddenFrom='sm'
+            hiddenFrom="sm"
           />
         </Group>
       </header>
@@ -149,10 +149,10 @@ export function HeaderMegaMenu() {
       <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
-        size='100%'
-        padding='md'
-        title='Navigation'
-        hiddenFrom='sm'
+        size="100%"
+        padding="md"
+        title="Navigation"
+        hiddenFrom="sm"
         zIndex={1000000}
       >
         <ScrollArea h="calc(100vh - 80px" mx="-md">
