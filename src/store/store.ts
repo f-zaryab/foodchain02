@@ -95,6 +95,17 @@ interface InventoryTransactionItem {
   notes: string;
 }
 
+interface OrderDetail {
+  id: string;
+  customer_id: string;
+  restaurant_id: string;
+  status: string;
+  total_amount: string;
+  payment_status: "";
+  created_at: string;
+  updated_at: string;
+}
+
 interface StoreState {
   // Cart Management
   cartItems: CartItem[];
@@ -142,6 +153,8 @@ interface StoreState {
   createSupplier: (data: any) => Promise<void>;
   inventoryTransactions: InventoryTransactionItem[];
   fetchInventoryTransactions: () => Promise<void>;
+  currentOrder: OrderDetail[];
+  fetchCurrentOrder: () => Promise<void>;
 }
 
 // Create the store with type safety
@@ -177,7 +190,7 @@ const useStore = create<StoreState>((set, get) => ({
   },
 
   signupUser: async (data) => {
-    const url = "/api/users/register";
+    const url = `${apiUrl}/api/users/register`;
     const headers = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
@@ -191,6 +204,8 @@ const useStore = create<StoreState>((set, get) => ({
 
     try {
       const response = await axios.post(url, body, { headers });
+      console.log("REsponse >>> ", response);
+
       set((state) => ({
         user: { ...state.user, ...response?.data?.data },
       }));
@@ -566,6 +581,26 @@ const useStore = create<StoreState>((set, get) => ({
       set({
         inventoryTransactions:
           response?.data?.data?.inventoryTransactions || [],
+      });
+    } catch (error) {
+      console.error("Failed to fetch menu items:", error);
+    }
+  },
+
+  currentOrder: [],
+
+  fetchCurrentOrder: async () => {
+    const url = `${apiUrl}/api/orders/orders`;
+    const headers = {
+      Authorization: `Bearer ${get().user.token}`,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    try {
+      const response = await axios.get(url, { headers });
+     set({
+        currentOrder: response?.data?.data || [],
       });
     } catch (error) {
       console.error("Failed to fetch menu items:", error);

@@ -10,6 +10,7 @@ import {
   Avatar,
   UnstyledButton,
   Menu,
+  Image,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./Header.module.css";
@@ -89,7 +90,9 @@ export function HeaderMegaMenu() {
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           {/* <MantineLogo size={30} /> */}
-          <div>Logo</div>
+          <div>
+            <Image src="/logo.jpg" w={55} h={55} />
+          </div>
 
           <Group h="100%" gap={0} visibleFrom="sm">
             <Link to="/" className={classes.link}>

@@ -1,4 +1,4 @@
-import { Anchor, Container, Group } from "@mantine/core";
+import { Anchor, Container, Group, Image } from "@mantine/core";
 import classes from "./Footer.module.css";
 
 const links = [
@@ -24,7 +24,9 @@ export function Footer() {
   return (
     <div className={classes.footer}>
       <Container className={classes.inner}>
-        <div>Logo</div>
+        <div>
+          <Image src="/logo.jpg" w={55} h={55} />
+        </div>
         <Group className={classes.links}>{items}</Group>
       </Container>
     </div>
