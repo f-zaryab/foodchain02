@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 // lib
 import useStore from "../../store/store";
+// styles
+import classes from "./MyDetails.module.css";
 
 const MyDetails = () => {
   const { fetchEmployeeDetail, employeeDetail } = useStore();
@@ -9,18 +11,18 @@ const MyDetails = () => {
     fetchEmployeeDetail();
   }, [fetchEmployeeDetail]);
 
-  console.log("EmployeeDetail >>> ", employeeDetail);
-
   return (
-    <div style={{ color: "red", fontSize: "1.5rem" }}>
-      <h1>My details: </h1>
-      <p>ID: {employeeDetail.id}</p>
-      <p>Name: {employeeDetail.name}</p>
-      <p>Email: {employeeDetail.email}</p>
-      <p>Position: {employeeDetail.position}</p>
-      <p>Salary: {employeeDetail.salary}</p>
-      <p>Status: {employeeDetail.status}</p>
-    </div>
+    <section className={classes.mainContainer}>
+      <h1 className={classes.heading}>My details: </h1>
+      <div className={classes.detailContainer}>
+        <p className={classes.paragraph}>ID: {employeeDetail.id}</p>
+        <p className={classes.paragraph}>Name: {employeeDetail.name}</p>
+        <p className={classes.paragraph}>Email: {employeeDetail.email}</p>
+        <p className={classes.paragraph}>Position: {employeeDetail.position}</p>
+        <p className={classes.paragraph}>Salary: {employeeDetail.salary}</p>
+        <p className={classes.paragraph}>Status: {employeeDetail.status}</p>
+      </div>
+    </section>
   );
 };
 

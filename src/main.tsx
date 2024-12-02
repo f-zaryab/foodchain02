@@ -15,6 +15,7 @@ import ManagerDashboardPage from "./pages/Manager/index.tsx";
 import StaffDasboardPage from "./pages/Staff/index.tsx";
 import ExecutiveDashboardPage from "./pages/Executive/index.tsx";
 import KitchenStaffDashboardPage from "./pages/KitchenStaff/index.tsx";
+import KitchenDetailPage from "./pages/KitchenDetail/index.tsx";
 import App from "./App.tsx";
 // styles
 import "./index.css";
@@ -117,6 +118,11 @@ const router = createBrowserRouter([
       {
         path: "kitchen-staff",
         element: <KitchenStaffDashboardPage />,
+      },
+      {
+        path: "kitchen/:id",
+        element: <KitchenDetailPage />,
+        errorElement: <NotFoundPage />,
       },
     ],
   },

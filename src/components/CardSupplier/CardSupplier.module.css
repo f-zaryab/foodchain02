@@ -1,0 +1,16 @@
+.badgeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.badge {
+    width: 100%;
+}
+
+.textContainer {
+    text-align: left;
+    width: 50%;
+}
