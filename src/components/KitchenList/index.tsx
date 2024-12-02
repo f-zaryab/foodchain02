@@ -1,43 +1,44 @@
 import { useEffect } from "react";
 // lib
+import KitchenCards from "../KitchenCards";
 import useStore from "../../store/store";
-import { Link } from "react-router-dom";
+// styles
+import classes from "./KitchenList.module.css";
+import { SimpleGrid } from "@mantine/core";
 
 const KitchenList = () => {
-  const { fetchKitchenList, kitchenList } = useStore();
+  const { fetchKitchenList, kitchenList, employeeDetail } = useStore();
 
   useEffect(() => {
     fetchKitchenList();
   }, [fetchKitchenList]);
 
   return (
-    <div>
-      <h1>Kitchen List</h1>
-      <ul>
+    <section className={classes.mainContainer}>
+      <h2 className={classes.heading}>List of All Kitchens</h2>
+      <SimpleGrid
+        cols={3}
+        className={classes.gridContainer}
+        spacing="lg"
+        verticalSpacing="lg"
+      >
         {kitchenList.length > 0 &&
           kitchenList.map((item) => (
-            <ul id={item.kitchen_id}>
-              <Link to={`/dashboard/kitchen/${item.kitchen_id}`}>
-                <div
-                  style={{
-                    border: "1px solid green",
-                    borderRadius: "1rem",
-                    padding: "1rem",
-                  }}
-                >
-                  <p>Name: {item.name}</p>
-                  <p>Postcode: {item.postcode}</p>
-                  <p>ManagerID: {item.manager_id}</p>
-                  <p>KitchenID: {item.kitchen_id}</p>
-                  <p>Adress: {item.address}</p>
-                  <p>City: {item.city}</p>
-                  <p>Status: {item.status}</p>
-                </div>
-              </Link>
-            </ul>
+            <div id={item.kitchen_id} key={item.kitchen_id}>
+              <KitchenCards
+                name={item.name}
+                managerID={item.manager_id}
+                kitchenID={item.kitchen_id}
+                address={item.address}
+                postcode={item.postcode}
+                city={item.city}
+                status={item.status}
+                myKitchen={item.kitchen_id === employeeDetail.restaurant_id}
+              />
+            </div>
           ))}
-      </ul>
-    </div>
+      </SimpleGrid>
+    </section>
   );
 };
 

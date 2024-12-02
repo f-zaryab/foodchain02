@@ -31,6 +31,17 @@ interface User {
   updatedAt?: string;
 }
 
+interface Employee {
+  id: string;
+  email: string;
+  username: string;
+  name: string;
+  position: string;
+  salary: string;
+  status: string;
+  restaurant_id: string;
+}
+
 interface RestaurantMetrics {
   id: string;
   restaurant_id: string;
@@ -79,6 +90,10 @@ interface StoreState {
   fetchSingleKitchenDetail: (id: string) => Promise<void>;
   createdMenuItem: MenuItem[];
   creatingMenuItemByManager: (data: any) => Promise<void>;
+  allEmployees: Employee[];
+  fetchAllEmployees: () => Promise<void>;
+  createdEmployee: Employee[];
+  creatingEmployeeByManager: (data: any) => Promise<void>;
 
   // cartItems: string[];
   // addItemToCart: (item: string) => void;
@@ -274,6 +289,55 @@ const useStore = create<StoreState>((set, get) => ({
       set({
         createdMenuItem: [response?.data?.data],
       });
+      get().fetchMenuItems();
+    } catch (error) {
+      console.error("Error from API: ", error);
+    }
+  },
+
+  allEmployees: [],
+
+  fetchAllEmployees: async () => {
+    const url = `${apiUrl}/api/employee/get/employees`;
+    const headers = {
+      Authorization: `Bearer ${get().user.token}`,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+
+    try {
+      const response = await axios.get(url, { headers });
+      set({ allEmployees: response?.data?.data || [] });
+    } catch (error) {
+      console.error("Failed to fetch menu items:", error);
+    }
+  },
+
+  createdEmployee: [],
+
+  creatingEmployeeByManager: async (data) => {
+    const url = `${apiUrl}/api/employee/create`;
+    const headers = {
+      Authorization: `Bearer ${get().user.token}`,
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
+    const body = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      position: data.position,
+      hire_date: "2024-11-18 14:44:43",
+      salary: data.salary,
+      status: data.status,
+    };
+
+    try {
+      const response = await axios.post(url, body, { headers });
+      set({
+        createdEmployee: [response?.data?.data],
+      });
+      get().fetchAllEmployees();
     } catch (error) {
       console.error("Error from API: ", error);
     }

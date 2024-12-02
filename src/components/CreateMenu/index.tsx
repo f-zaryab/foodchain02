@@ -6,14 +6,20 @@ import {
   NumberInput,
   Switch,
   Alert,
+  Divider,
+  Grid,
+  ScrollArea,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Link } from "react-router-dom";
 // src
+import CardMenuSimple from "../CardMenuSimple";
 import useStore from "../../store/store";
+// styles
+import classes from "./CreateMenu.module.css";
 
 const CreateMenu = () => {
-  const { creatingMenuItemByManager, createdMenuItem } = useStore();
+  const { creatingMenuItemByManager, createdMenuItem, menuItems } = useStore();
   const [showNotifications, setShowNotifications] = useState(false);
 
   const form = useForm({
@@ -55,7 +61,7 @@ const CreateMenu = () => {
   }, [createdMenuItem.length]);
 
   return (
-    <div>
+    <section className={classes.mainContainer}>
       {showNotifications && (
         <div
           style={{
@@ -81,9 +87,49 @@ const CreateMenu = () => {
           </Alert>
         </div>
       )}
-      <h1>Create Menu component</h1>
+
+      <h1 className={classes.heading}>Menu</h1>
+
+      <div id="current-menu">
+        <Divider
+          my="xs"
+          label="Current Menu"
+          labelPosition="center"
+          className={classes.labelDivider}
+        />
+        <div>
+          <ScrollArea h={350} scrollbars="y">
+            {menuItems.length > 0 ? (
+              <Grid>
+                {menuItems.map((item) => (
+                  <Grid.Col span={3} key={item.id}>
+                    <CardMenuSimple
+                      name={item.name}
+                      description={item.description}
+                      price={item.price}
+                      isFeatured={Boolean(item.is_featured)}
+                    />
+                  </Grid.Col>
+                ))}
+              </Grid>
+            ) : (
+              <p>No items to display</p>
+            )}
+          </ScrollArea>
+        </div>
+      </div>
+
       <div>
-        <form onSubmit={form.onSubmit((values) => handleFormSubmit(values))}>
+        <Divider
+          my="xs"
+          label="Create Menu"
+          labelPosition="center"
+          className={classes.labelDivider}
+        />
+        <form
+          onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
+          className={classes.formStyles}
+        >
           {/* --------------- Name -------------- */}
           <TextInput
             withAsterisk
@@ -157,6 +203,7 @@ const CreateMenu = () => {
           {/* ----------- Is Featured ------------- */}
           <Switch
             defaultChecked
+            color="red.0"
             label="Is Featured"
             key={form.key("is_featured")}
             {...form.getInputProps("is_featured")}
@@ -164,11 +211,13 @@ const CreateMenu = () => {
           />
 
           <Group justify="flex-end" mt="md" style={{ marginTop: 20 }}>
-            <Button type="submit">Create Menu</Button>
+            <Button type="submit" color="red.0">
+              Create Menu
+            </Button>
           </Group>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 

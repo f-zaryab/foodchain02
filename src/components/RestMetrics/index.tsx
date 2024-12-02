@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 // lib
 import useStore from "../../store/store";
+// styles
+import classes from "./RestMetrics.module.css";
 
 const RestaurantMetrics = () => {
   const { fetchRestMetrics, restMetrics, employeeDetail } = useStore();
@@ -12,8 +14,8 @@ const RestaurantMetrics = () => {
   }, [employeeDetail.restaurant_id, fetchRestMetrics]);
 
   return (
-    <div>
-      <h1>Restaurant Metrics</h1>
+    <section className={classes.mainContainer}>
+      <h1 className={classes.heading}>Restaurant Metrics</h1>
       {restMetrics?.length > 0 && (
         <div style={{ color: "red", fontSize: "1.5rem" }}>
           <p>Restaurant ID: {restMetrics[0]?.restaurant_id}</p>
@@ -24,7 +26,7 @@ const RestaurantMetrics = () => {
           <p>Avg. Order Value: {restMetrics[0]?.average_order_value}</p>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 
